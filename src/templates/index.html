@@ -6,108 +6,310 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Gerenciador de Tarefas</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 40px 20px;
+            color: #222;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .descricao {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .card h2 {
+            margin-top: 0;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            margin-bottom: 18px;
+            font-size: 15px;
+        }
+
+        button {
+            border: none;
+            border-radius: 6px;
+            padding: 12px 18px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        .btn-adicionar {
+            width: 100%;
+            background-color: #2563eb;
+            color: white;
+        }
+
+        .btn-adicionar:hover {
+            background-color: #1d4ed8;
+        }
+
+        .tarefa {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+
+            border: 1px solid #ddd;
+            border-radius: 8px;
+
+            padding: 16px;
+            margin-bottom: 12px;
+
+            background-color: #fafafa;
+        }
+
+        .informacoes {
+            flex: 1;
+        }
+
+        .titulo {
+            font-size: 17px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .prioridade {
+            font-size: 14px;
+        }
+
+        .alta {
+            color: #dc2626;
+            font-weight: bold;
+        }
+
+        .media {
+            color: #d97706;
+            font-weight: bold;
+        }
+
+        .baixa {
+            color: #16a34a;
+            font-weight: bold;
+        }
+
+        .acoes {
+            display: flex;
+            gap: 10px;
+        }
+
+        .acoes a {
+            text-decoration: none;
+            font-weight: bold;
+            padding: 8px 12px;
+            border-radius: 5px;
+        }
+
+        .editar {
+            color: #2563eb;
+            background-color: #dbeafe;
+        }
+
+        .excluir {
+            color: #dc2626;
+            background-color: #fee2e2;
+        }
+
+        .vazio {
+            text-align: center;
+            color: #777;
+            padding: 20px;
+        }
+
+        @media (max-width: 600px) {
+
+            body {
+                padding: 20px 10px;
+            }
+
+            .tarefa {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .acoes {
+                justify-content: flex-end;
+            }
+
+        }
+
+    </style>
+
 </head>
+
 
 <body>
 
+<div class="container">
+
     <h1>Gerenciador de Tarefas</h1>
 
-    <h2>Adicionar tarefa</h2>
-
-    <form action="/adicionar" method="POST">
-
-        <label for="titulo">
-            Título:
-        </label>
-
-        <input
-            type="text"
-            id="titulo"
-            name="titulo"
-            placeholder="Digite uma tarefa"
-            required
-        >
-
-        <br><br>
-
-        <label for="prioridade">
-            Prioridade:
-        </label>
-
-        <select
-            id="prioridade"
-            name="prioridade"
-        >
-
-            <option value="Alta">
-                Alta
-            </option>
-
-            <option value="Média" selected>
-                Média
-            </option>
-
-            <option value="Baixa">
-                Baixa
-            </option>
-
-        </select>
-
-        <br><br>
-
-        <button type="submit">
-            Adicionar tarefa
-        </button>
-
-    </form>
+    <p class="descricao">
+        Organize suas tarefas por prioridade
+    </p>
 
 
-    <hr>
+    <!-- FORMULÁRIO DE NOVA TAREFA -->
+
+    <div class="card">
+
+        <h2>Adicionar tarefa</h2>
+
+        <form action="/adicionar" method="POST">
+
+            <label for="titulo">
+                Título da tarefa
+            </label>
+
+            <input
+                type="text"
+                id="titulo"
+                name="titulo"
+                placeholder="Digite o título da tarefa"
+                required
+            >
 
 
-    <h2>Minhas tarefas</h2>
+            <label for="prioridade">
+                Prioridade
+            </label>
 
-    {% if tarefas %}
+            <select
+                id="prioridade"
+                name="prioridade"
+            >
 
-        {% for tarefa in tarefas %}
+                <option value="Alta">
+                    Alta
+                </option>
 
-            <div>
+                <option value="Média" selected>
+                    Média
+                </option>
 
-                <strong>
-                    {{ tarefa.titulo }}
-                </strong>
+                <option value="Baixa">
+                    Baixa
+                </option>
 
-                <br>
+            </select>
 
-                Prioridade:
 
-                {{ tarefa.prioridade }}
+            <button
+                type="submit"
+                class="btn-adicionar"
+            >
+                + Adicionar tarefa
+            </button>
 
-                <br><br>
+        </form>
 
-                <a href="/editar/{{ tarefa.id }}">
-                    Editar
-                </a>
+    </div>
 
-                &nbsp; | &nbsp;
 
-                <a href="/excluir/{{ tarefa.id }}">
-                    Excluir
-                </a>
+    <!-- LISTA DE TAREFAS -->
 
+    <div class="card">
+
+        <h2>Minhas tarefas</h2>
+
+        {% if tarefas %}
+
+            {% for tarefa in tarefas %}
+
+                <div class="tarefa">
+
+                    <div class="informacoes">
+
+                        <div class="titulo">
+                            {{ tarefa.titulo }}
+                        </div>
+
+                        <div class="prioridade">
+
+                            Prioridade:
+
+                            <span class="{{ tarefa.prioridade|lower }}">
+                                {{ tarefa.prioridade }}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="acoes">
+
+                        <a
+                            href="/editar/{{ tarefa.id }}"
+                            class="editar"
+                        >
+                            Editar
+                        </a>
+
+                        <a
+                            href="/excluir/{{ tarefa.id }}"
+                            class="excluir"
+                        >
+                            Excluir
+                        </a>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="vazio">
+                Nenhuma tarefa cadastrada.
             </div>
 
-            <hr>
+        {% endif %}
 
-        {% endfor %}
+    </div>
 
-    {% else %}
-
-        <p>
-            Nenhuma tarefa cadastrada.
-        </p>
-
-    {% endif %}
+</div>
 
 </body>
 
