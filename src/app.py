@@ -15,6 +15,8 @@ tarefas = [
     }
 ]
 
+PRIORIDADES_VALIDAS = {"Alta", "Média", "Baixa"}
+
 
 @app.route("/")
 def inicio():
@@ -23,8 +25,14 @@ def inicio():
 
 @app.route("/adicionar", methods=["POST"])
 def adicionar():
-    titulo = request.form["titulo"]
-    prioridade = request.form["prioridade"]
+    titulo = request.form.get("titulo", "").strip()
+    prioridade = request.form.get("prioridade", "")
+
+    if not titulo:
+        return redirect(url_for("inicio"))
+
+    if prioridade not in PRIORIDADES_VALIDAS:
+        prioridade = "Média"
 
     novo_id = max([t["id"] for t in tarefas], default=0) + 1
 
@@ -45,8 +53,21 @@ def editar(id):
         return redirect(url_for("inicio"))
 
     if request.method == "POST":
-        tarefa["titulo"] = request.form["titulo"]
-        tarefa["prioridade"] = request.form["prioridade"]
+        titulo = request.form.get("titulo", "").strip()
+        prioridade = request.form.get("prioridade", "")
+
+        if not titulo:
+            return render_template(
+                "editar.html",
+                tarefa=tarefa,
+                erro="O título da tarefa não pode ficar vazio."
+            )
+
+        if prioridade not in PRIORIDADES_VALIDAS:
+            prioridade = "Média"
+
+        tarefa["titulo"] = titulo
+        tarefa["prioridade"] = prioridade
 
         return redirect(url_for("inicio"))
 
