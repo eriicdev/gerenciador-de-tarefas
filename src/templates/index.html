@@ -84,6 +84,31 @@
             background-color: #1d4ed8;
         }
 
+        .filtros {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filtro {
+            text-decoration: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            background-color: #e5e7eb;
+            color: #374151;
+            font-weight: bold;
+        }
+
+        .filtro:hover {
+            background-color: #d1d5db;
+        }
+
+        .filtro.ativo {
+            background-color: #2563eb;
+            color: white;
+        }
+
         .tarefa {
             display: flex;
             justify-content: space-between;
@@ -243,10 +268,7 @@
                 Prioridade
             </label>
 
-            <select
-                id="prioridade"
-                name="prioridade"
-            >
+            <select id="prioridade" name="prioridade">
 
                 <option value="Alta">
                     Alta
@@ -277,6 +299,32 @@
     <div class="card">
 
         <h2>Minhas tarefas</h2>
+
+        <div class="filtros">
+
+            <a
+                href="/?filtro=todas"
+                class="filtro {% if filtro == 'todas' %}ativo{% endif %}"
+            >
+                Todas
+            </a>
+
+            <a
+                href="/?filtro=pendentes"
+                class="filtro {% if filtro == 'pendentes' %}ativo{% endif %}"
+            >
+                Pendentes
+            </a>
+
+            <a
+                href="/?filtro=concluidas"
+                class="filtro {% if filtro == 'concluidas' %}ativo{% endif %}"
+            >
+                Concluídas
+            </a>
+
+        </div>
+
 
         {% if tarefas %}
 
@@ -365,7 +413,7 @@
         {% else %}
 
             <div class="vazio">
-                Nenhuma tarefa cadastrada.
+                Nenhuma tarefa encontrada neste filtro.
             </div>
 
         {% endif %}

@@ -18,11 +18,36 @@ tarefas = [
 ]
 
 PRIORIDADES_VALIDAS = {"Alta", "Média", "Baixa"}
+FILTROS_VALIDOS = {"todas", "pendentes", "concluidas"}
 
 
 @app.route("/")
 def inicio():
-    return render_template("index.html", tarefas=tarefas)
+    filtro = request.args.get("filtro", "todas")
+
+    if filtro not in FILTROS_VALIDOS:
+        filtro = "todas"
+
+    if filtro == "pendentes":
+        tarefas_exibidas = [
+            tarefa for tarefa in tarefas
+            if not tarefa["concluida"]
+        ]
+
+    elif filtro == "concluidas":
+        tarefas_exibidas = [
+            tarefa for tarefa in tarefas
+            if tarefa["concluida"]
+        ]
+
+    else:
+        tarefas_exibidas = tarefas
+
+    return render_template(
+        "index.html",
+        tarefas=tarefas_exibidas,
+        filtro=filtro
+    )
 
 
 @app.route("/adicionar", methods=["POST"])
