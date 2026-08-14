@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de Tarefas</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #f4f4f4;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        form {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        input, select, button {
+            padding: 10px;
+            margin: 5px;
+        }
+
+        .tarefa {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .alta {
+            color: red;
+            font-weight: bold;
+        }
+
+        .media {
+            color: orange;
+            font-weight: bold;
+        }
+
+        .baixa {
+            color: green;
+            font-weight: bold;
+        }
+
+        a {
+            color: red;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Gerenciador de Tarefas</h1>
+
+    <form action="/adicionar" method="POST">
+
+        <input
+            type="text"
+            name="titulo"
+            placeholder="Digite uma tarefa"
+            required
+        >
+
+        <select name="prioridade">
+            <option value="Alta">Alta</option>
+            <option value="Média" selected>Média</option>
+            <option value="Baixa">Baixa</option>
+        </select>
+
+        <button type="submit">Adicionar tarefa</button>
+
+    </form>
+
+    <h2>Minhas tarefas</h2>
+
+    {% for tarefa in tarefas %}
+
+        <div class="tarefa">
+
+            <div>
+                <strong>{{ tarefa.titulo }}</strong>
+
+                <br>
+
+                Prioridade:
+                <span class="{{ tarefa.prioridade|lower }}">
+                    {{ tarefa.prioridade }}
+                </span>
+            </div>
+
+            <a href="/excluir/{{ tarefa.id }}">
+                Excluir
+            </a>
+
+        </div>
+
+    {% endfor %}
+
+</body>
+</html>
