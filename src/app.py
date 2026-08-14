@@ -89,9 +89,7 @@ def concluir(id):
 
 @app.route("/excluir/<int:id>")
 def excluir(id):
-    global tarefas
-
-    tarefas = [t for t in tarefas if t["id"] != id]
+    tarefas[:] = [t for t in tarefas if t["id"] != id]
 
     return redirect(url_for("inicio"))
 
