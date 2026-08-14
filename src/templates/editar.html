@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Editar Tarefa</title>
+</head>
+
+<body>
+
+    <h1>Editar Tarefa</h1>
+
+    <form method="POST">
+
+        <label for="titulo">
+            Título:
+        </label>
+
+        <input
+            type="text"
+            id="titulo"
+            name="titulo"
+            value="{{ tarefa.titulo }}"
+            required
+        >
+
+        <br><br>
+
+        <label for="prioridade">
+            Prioridade:
+        </label>
+
+        <select
+            id="prioridade"
+            name="prioridade"
+        >
+
+            <option value="Alta"
+                {% if tarefa.prioridade == "Alta" %}selected{% endif %}>
+                Alta
+            </option>
+
+            <option value="Média"
+                {% if tarefa.prioridade == "Média" %}selected{% endif %}>
+                Média
+            </option>
+
+            <option value="Baixa"
+                {% if tarefa.prioridade == "Baixa" %}selected{% endif %}>
+                Baixa
+            </option>
+
+        </select>
+
+        <br><br>
+
+        <button type="submit">
+            Salvar alteração
+        </button>
+
+    </form>
+
+    <br>
+
+    <a href="/">
+        Voltar para tarefas
+    </a>
+
+</body>
+
+</html>

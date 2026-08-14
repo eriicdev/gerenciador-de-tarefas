@@ -3,8 +3,16 @@ from flask import Flask, render_template, request, redirect, url_for
 app = Flask(__name__)
 
 tarefas = [
-    {"id": 1, "titulo": "Fazer trabalho de Engenharia de Software", "prioridade": "Alta"},
-    {"id": 2, "titulo": "Estudar para a prova", "prioridade": "Média"}
+    {
+        "id": 1,
+        "titulo": "Fazer trabalho de Engenharia de Software",
+        "prioridade": "Alta"
+    },
+    {
+        "id": 2,
+        "titulo": "Estudar para a prova",
+        "prioridade": "Média"
+    }
 ]
 
 
@@ -29,9 +37,26 @@ def adicionar():
     return redirect(url_for("inicio"))
 
 
+@app.route("/editar/<int:id>", methods=["GET", "POST"])
+def editar(id):
+    tarefa = next((t for t in tarefas if t["id"] == id), None)
+
+    if tarefa is None:
+        return redirect(url_for("inicio"))
+
+    if request.method == "POST":
+        tarefa["titulo"] = request.form["titulo"]
+        tarefa["prioridade"] = request.form["prioridade"]
+
+        return redirect(url_for("inicio"))
+
+    return render_template("editar.html", tarefa=tarefa)
+
+
 @app.route("/excluir/<int:id>")
 def excluir(id):
     global tarefas
+
     tarefas = [t for t in tarefas if t["id"] != id]
 
     return redirect(url_for("inicio"))
