@@ -6,12 +6,14 @@ tarefas = [
     {
         "id": 1,
         "titulo": "Fazer trabalho de Engenharia de Software",
-        "prioridade": "Alta"
+        "prioridade": "Alta",
+        "concluida": False
     },
     {
         "id": 2,
         "titulo": "Estudar para a prova",
-        "prioridade": "Média"
+        "prioridade": "Média",
+        "concluida": False
     }
 ]
 
@@ -39,7 +41,8 @@ def adicionar():
     tarefas.append({
         "id": novo_id,
         "titulo": titulo,
-        "prioridade": prioridade
+        "prioridade": prioridade,
+        "concluida": False
     })
 
     return redirect(url_for("inicio"))
@@ -72,6 +75,16 @@ def editar(id):
         return redirect(url_for("inicio"))
 
     return render_template("editar.html", tarefa=tarefa)
+
+
+@app.route("/concluir/<int:id>")
+def concluir(id):
+    tarefa = next((t for t in tarefas if t["id"] == id), None)
+
+    if tarefa is not None:
+        tarefa["concluida"] = not tarefa["concluida"]
+
+    return redirect(url_for("inicio"))
 
 
 @app.route("/excluir/<int:id>")

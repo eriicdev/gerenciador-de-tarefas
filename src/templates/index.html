@@ -96,6 +96,11 @@
             background-color: #fafafa;
         }
 
+        .tarefa.concluida {
+            background-color: #f0fdf4;
+            border-color: #bbf7d0;
+        }
+
         .informacoes {
             flex: 1;
         }
@@ -104,6 +109,11 @@
             font-size: 17px;
             font-weight: bold;
             margin-bottom: 8px;
+        }
+
+        .concluida .titulo {
+            text-decoration: line-through;
+            color: #777;
         }
 
         .prioridade {
@@ -125,9 +135,24 @@
             font-weight: bold;
         }
 
+        .status {
+            margin-top: 8px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .status-concluida {
+            color: #16a34a;
+        }
+
+        .status-pendente {
+            color: #d97706;
+        }
+
         .acoes {
             display: flex;
-            gap: 10px;
+            gap: 8px;
+            flex-wrap: wrap;
         }
 
         .acoes a {
@@ -135,6 +160,17 @@
             font-weight: bold;
             padding: 8px 12px;
             border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .concluir {
+            color: #15803d;
+            background-color: #dcfce7;
+        }
+
+        .reabrir {
+            color: #92400e;
+            background-color: #fef3c7;
         }
 
         .editar {
@@ -145,15 +181,6 @@
         .excluir {
             color: #dc2626;
             background-color: #fee2e2;
-        }
-
-        .erro {
-            background-color: #fee2e2;
-            color: #b91c1c;
-            border: 1px solid #fecaca;
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 18px;
         }
 
         .vazio {
@@ -255,7 +282,7 @@
 
             {% for tarefa in tarefas %}
 
-                <div class="tarefa">
+                <div class="tarefa {% if tarefa.concluida %}concluida{% endif %}">
 
                     <div class="informacoes">
 
@@ -273,9 +300,46 @@
 
                         </div>
 
+
+                        {% if tarefa.concluida %}
+
+                            <div class="status status-concluida">
+                                ✓ Tarefa concluída
+                            </div>
+
+                        {% else %}
+
+                            <div class="status status-pendente">
+                                ○ Tarefa pendente
+                            </div>
+
+                        {% endif %}
+
                     </div>
 
+
                     <div class="acoes">
+
+                        {% if tarefa.concluida %}
+
+                            <a
+                                href="/concluir/{{ tarefa.id }}"
+                                class="reabrir"
+                            >
+                                Reabrir
+                            </a>
+
+                        {% else %}
+
+                            <a
+                                href="/concluir/{{ tarefa.id }}"
+                                class="concluir"
+                            >
+                                Concluir
+                            </a>
+
+                        {% endif %}
+
 
                         <a
                             href="/editar/{{ tarefa.id }}"
@@ -283,6 +347,7 @@
                         >
                             Editar
                         </a>
+
 
                         <a
                             href="/excluir/{{ tarefa.id }}"
