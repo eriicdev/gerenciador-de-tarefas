@@ -68,3 +68,16 @@ Autor
 
 Erik Costa - @eeriicdev (github)
 
+## Mudança de escopo
+
+Durante o desenvolvimento do projeto, foi solicitada uma mudança no escopo inicial para permitir a filtragem das tarefas por status.
+
+A nova funcionalidade permite visualizar:
+
+- Todas as tarefas
+- Tarefas pendentes
+- Tarefas concluídas
+
+A mudança foi registrada no quadro Kanban por meio de um novo card e implementada no sistema para facilitar a organização e o acompanhamento das atividades.
+
+A alteração foi registrada no histórico de versionamento por meio de um novo commit.
